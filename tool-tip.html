@@ -1,0 +1,60 @@
+<template id="template">
+  <style>
+    .bubble {
+      font-family: Roboto, Helvetica, Arial;
+      font-size: 0.8em;
+      position: absolute;
+      background-color: #eee;
+      margin: 0;
+      padding: 3px 5px;
+      z-index: 10;
+      border: solid 1px gray;
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity ease-in-out 0.2s;
+      box-shadow: 2px 2px 5px gray;
+    }
+  </style>
+  <content></content>
+  <div class="bubble"></div>
+</template>
+<script>
+  var currentScript = document._currentScript || document.currentScript;
+  var ToolTipProto = Object.create(HTMLSpanElement.prototype);
+  ToolTipProto.show = function() {
+    if (this.timer !== null) {
+      var bubble = this.shadowRoot.querySelector('.bubble');
+      bubble.textContent = this.getAttribute('tip');
+      bubble.style.opacity = 1.0;
+      this.timer = null;
+    }
+  };
+  ToolTipProto.hide = function() {
+    var bubble = this.shadowRoot.querySelector('.bubble');
+    bubble.style.opacity = 0;
+  };
+  ToolTipProto.createdCallback = function() {
+    this.timer = null;
+
+    var template = currentScript.ownerDocument.querySelector('#template');
+    var shadow = this.createShadowRoot();
+    shadow.appendChild(template.content.cloneNode(true));
+
+    this.addEventListener('mouseover', (function(e) {
+      this.timer = setTimeout(this.show.bind(this), 500);
+    }).bind(this));
+
+    this.addEventListener('mouseout', (function(e) {
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      } else {
+        this.hide();
+      }
+    }).bind(this));
+  };
+  document.registerElement('tool-tip', {
+    prototype: ToolTipProto,
+    extends: 'span'
+  });
+</script>

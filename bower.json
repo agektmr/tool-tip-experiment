@@ -1,0 +1,24 @@
+{
+  "name": "tool-tip",
+  "version": "0.1.0",
+  "authors": [
+    "Eiji Kitamura <agektmr+github@gmail.com>"
+  ],
+  "description": "\"tool-tip\" type extension custom element",
+  "main": "tool-tip.html",
+  "keywords": [
+    "webcomponents"
+  ],
+  "license": "Apache2.0",
+  "homepage": "google.com/+agektmr",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "platform": "Polymer/platform#~0.4.2"
+  }
+}
